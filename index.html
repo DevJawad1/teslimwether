@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body class="mydisp">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 shadow-lg mx-auto mt-2 text-center">
+                <h1 class="text-center">Weather-API</h1>
+                <input placeholder="Enter Country To Get Weather-checker" id="entercountry" type="text"
+                    class="form-control my-2 text-center">
+                <button onclick="get()" class="btn btn-warning my-2 p-2">Get Details</button>
+                <div id="disp" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .comeup {
+            background-image: url(./images.jfif);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            height: 30vh;
+        }
+
+        .wit {
+            color: white;
+            font-size: 10vh;
+            box-shadow: 1px 1px 5px 5px rgb(244, 244, 248);
+        }
+
+        .ptag {
+            color: white;
+            font-size: 20px !important;
+            text-align: start;
+            text-decoration: underline;
+        }
+
+        .keep {
+            font-size: 25px !important;
+            color: white;
+            margin-top: -10px !important;
+            text-align: start !important;
+        }
+
+        #disp {
+            /* border: 2px solid; */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .moving {
+            color: white;
+            text-align: end !important;
+        }
+
+        .mydisp {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-image: url(./4.jfif);
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+
+
+        const get = async () => {
+            if (entercountry.value == "") {
+                entercountry.style.backgroundColor = "red"                
+            }
+            else {
+                let inputall = entercountry.value
+                let APIkey = "c948293bb7bfd9ef0040bee7d3aeddc5"
+                let myurl = `https://api.openweathermap.org/data/2.5/weather?q=${inputall}&appid=${APIkey}&units=metric`
+                let geturl = await fetch(myurl)
+                let convertgeturl = await geturl.json()
+                console.log(convertgeturl);
+                entercountry.value = ""
+                disp.innerHTML = ""
+
+                let element = Math.round(convertgeturl.main.temp)
+                disp.innerHTML += `
+                <div class="ima comeup shadow-lg w-50">
+                    <p class="ptag">Temperature</p>
+                <p class="wit">${element}<i class="ri-celsius-line"> <br></i> 
+                    <div class="keep">${convertgeturl.name} NG</div> 
+                    </p>
+                    </div>
+                    `
+                disp.innerHTML += `<div class="moving"> <p>Country Name-  ${convertgeturl.name}</p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Wind Degree-  ${convertgeturl.wind.deg}% </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Wind Speed-  ${convertgeturl.wind.speed} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Wind Gust-  ${convertgeturl.wind.gust} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Sunset-  ${convertgeturl.sys.sunset} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Sunrise-  ${convertgeturl.sys.sunrise} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Latitude-  ${convertgeturl.coord.lat} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Lontitude-  ${convertgeturl.coord.lon} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Humidity-  ${convertgeturl.main.humidity} </p> </div>`
+                disp.innerHTML += `<div class="moving"> <p>Pressure-  ${convertgeturl.main.pressure} </p> </div>`
+                for (let index = 0; index < convertgeturl.weather.length; index++) {
+                    disp.innerHTML += `<div class="moving"> <p>Weather Description-${convertgeturl.weather[index].description} </p> </div>`
+                    console.log(convertgeturl.name);
+                }
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
